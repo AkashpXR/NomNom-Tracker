@@ -527,85 +527,183 @@ import {getAI, getGenerativeModel, GoogleAIBackend} from 'https://www.gstatic.co
 
 /* ---------- food database: id|name|region|diet|serving|grams|kcal|protein|carbs|fat|fibre|other names ---------- */
 const RAW = `
-idli|Idli|S|v|1 piece|40|58|1.6|12|0.4|0.8|idly iddli
+idli|Idli|S|v|1 piece|40|58|1.6|12|0.4|0.8|idly iddli இட்லி
 rava-idli|Rava idli|S|v|1 piece|60|120|3|16|5|0.8|semolina idli
-plain-dosa|Plain dosa|S|v|1 dosa|80|160|3.9|25|5|1|dosai dosey sada dosa
-masala-dosa|Masala dosa|S|v|1 dosa|200|340|7|48|13|3.5|masale dose
+plain-dosa|Plain dosa|S|v|1 dosa|80|160|3.9|25|5|1|dosai dosey sada dosa dosai தோசை
+masala-dosa|Masala dosa|S|v|1 dosa|200|340|7|48|13|3.5|masale dose மசாலா தோசை
 ghee-roast|Ghee roast dosa|S|v|1 dosa|100|280|4|30|16|1|paper roast nei roast
 mysore-masala-dosa|Mysore masala dosa|S|v|1 dosa|220|410|8|52|19|4|
 rava-dosa|Rava dosa|S|v|1 dosa|100|230|4|30|10|1|semolina dosa
 set-dosa|Set dosa|S|v|3 pieces|150|300|7|50|8|2|sponge dosa
 neer-dosa|Neer dosa|S|v|2 pieces|100|160|2.5|30|3|0.6|
 pesarattu|Pesarattu|S|v|1 dosa|120|210|10|28|6|5|moong dosa green gram dosa
-adai|Adai|S|v|1 adai|120|230|9|32|7|5|adai dosa lentil dosa
+adai|Adai|TN|v|1 adai|120|230|9|32|7|5|adai dosa lentil dosa அடை
 ragi-dosa|Ragi dosa|S|v|1 dosa|90|150|3.5|26|4|3|finger millet nachni
 egg-dosa|Egg dosa|S|e|1 dosa|130|240|10|26|10|1|mutta dosa
-uttapam|Onion uttapam|S|v|1 uttapam|150|250|6|38|8|3|uthappam oothappam
-medu-vada|Medu vada|S|v|1 piece|50|135|4.5|13|7.5|1.8|uzhunnu vada ulundu vadai urad vada
-masala-vada|Masala vada|S|v|1 piece|40|130|5|13|6.5|2.5|paruppu vadai dal vada
+uttapam|Onion uttapam|S|v|1 uttapam|150|250|6|38|8|3|uthappam oothappam ஊத்தப்பம்
+medu-vada|Medu vada|S|v|1 piece|50|135|4.5|13|7.5|1.8|uzhunnu vada ulundu vadai urad vada உளுந்து வடை வடை
+masala-vada|Masala vada|S|v|1 piece|40|130|5|13|6.5|2.5|paruppu vadai dal vada பருப்பு வடை மசால் வடை
 curd-vada|Curd vada|S|v|1 piece|120|180|7|18|9|1.5|thayir vadai dahi vada mosaru vade
-rava-upma|Rava upma|S|v|1 bowl|200|250|6|36|9|2.5|uppittu upma khara bath
+rava-upma|Rava upma|S|v|1 bowl|200|250|6|36|9|2.5|uppittu upma khara bath உப்புமா
 semiya-upma|Semiya upma|S|v|1 bowl|200|260|6|40|8|2|vermicelli upma
-ven-pongal|Ven pongal|S|v|1 bowl|200|300|8|40|12|2|khara pongal ghee pongal
-sakkarai-pongal|Sakkarai pongal|S|v|1 bowl|150|330|5|55|10|1.5|sweet pongal chakkara pongali
-kesari-bath|Kesari bath|S|v|1 bowl|100|300|3|45|12|0.5|rava kesari
-appam|Appam|S|v|1 piece|60|120|2|23|2|0.5|palappam hoppers
-idiyappam|Idiyappam|S|v|2 pieces|80|140|2.5|31|0.5|1|string hoppers noolappam sevai
+ven-pongal|Ven pongal|TN|v|1 bowl|200|300|8|40|12|2|khara pongal ghee pongal பொங்கல் வெண் பொங்கல்
+sakkarai-pongal|Sakkarai pongal|TN|v|1 bowl|150|330|5|55|10|1.5|sweet pongal chakkara pongali சர்க்கரை பொங்கல்
+kesari-bath|Kesari bath|S|v|1 bowl|100|300|3|45|12|0.5|rava kesari கேசரி
+appam|Appam|S|v|1 piece|60|120|2|23|2|0.5|palappam hoppers ஆப்பம்
+idiyappam|Idiyappam|S|v|2 pieces|80|140|2.5|31|0.5|1|string hoppers noolappam sevai இடியாப்பம்
 puttu|Puttu|S|v|1 piece|100|210|4|40|4|3|
 kadala-curry|Kadala curry|S|v|1 bowl|150|220|9|25|9|7|black chana curry
 veg-stew|Kerala veg stew|S|v|1 bowl|150|180|3|12|13|3|ishtu
-avial|Avial|S|v|1 bowl|150|170|3.5|12|12|4|aviyal
-beans-poriyal|Beans poriyal|S|v|1 bowl|100|100|2.5|9|6|4|thoran palya kura
+avial|Avial|S|v|1 bowl|150|170|3.5|12|12|4|aviyal அவியல்
+beans-poriyal|Beans poriyal|S|v|1 bowl|100|100|2.5|9|6|4|thoran palya kura poriyal பீன்ஸ் பொரியல் பொரியல்
 cabbage-thoran|Cabbage thoran|S|v|1 bowl|100|95|2|9|6|3|cabbage poriyal
-kootu|Kootu|S|v|1 bowl|150|140|6|16|6|4|
-sambar|Sambar|S|v|1 bowl|150|130|6|18|4|4.5|sambhar huli
-rasam|Rasam|S|v|1 bowl|150|60|2|8|2|1.5|saaru chaaru
-mor-kuzhambu|Mor kuzhambu|S|v|1 bowl|150|130|4|9|9|1|majjige huli moru curry
-vatha-kuzhambu|Vatha kuzhambu|S|v|1 bowl|100|120|2|10|8|2|kara kuzhambu puli kuzhambu
+kootu|Kootu|TN|v|1 bowl|150|140|6|16|6|4|கூட்டு
+sambar|Sambar|S|v|1 bowl|150|130|6|18|4|4.5|sambhar huli சாம்பார்
+rasam|Rasam|S|v|1 bowl|150|60|2|8|2|1.5|saaru chaaru ரசம்
+mor-kuzhambu|Mor kuzhambu|S|v|1 bowl|150|130|4|9|9|1|majjige huli moru curry pulissery மோர் குழம்பு
+vatha-kuzhambu|Vatha kuzhambu|TN|v|1 bowl|100|120|2|10|8|2|kara kuzhambu puli kuzhambu வத்தக் குழம்பு காரக் குழம்பு
 pappu|Andhra pappu|S|v|1 bowl|150|160|9|22|4|5|tomato pappu dal
 coconut-chutney|Coconut chutney|S|v|2 tbsp|30|70|1|3|6.5|1.5|thengai chutney kayi chutney
 tomato-chutney|Tomato chutney|S|v|2 tbsp|30|40|0.6|4|2.5|1|thakkali chutney
 peanut-chutney|Peanut chutney|S|v|2 tbsp|30|90|3.5|4|7|1.5|groundnut chutney palli chutney
 gongura|Gongura pickle|S|v|1 tbsp|20|45|0.5|2|4|1|gongura pachadi
-curd-rice|Curd rice|S|v|1 bowl|200|260|7|40|8|1|thayir sadam mosaru anna perugu annam dahi chawal
-lemon-rice|Lemon rice|S|v|1 bowl|200|300|5|50|9|2|chitranna elumichai sadam nimmakaya pulihora
-puliyogare|Tamarind rice|S|v|1 bowl|200|330|5|54|11|2.5|puliyogare pulihora puli sadam puliodarai
-coconut-rice|Coconut rice|S|v|1 bowl|200|350|5|48|15|3|thengai sadam
-tomato-rice|Tomato rice|S|v|1 bowl|200|280|5|48|8|2|thakkali sadam tomato bath
+curd-rice|Curd rice|S|v|1 bowl|200|260|7|40|8|1|thayir sadam mosaru anna perugu annam dahi chawal தயிர் சாதம்
+lemon-rice|Lemon rice|S|v|1 bowl|200|300|5|50|9|2|chitranna elumichai sadam nimmakaya pulihora எலுமிச்சை சாதம்
+puliyogare|Tamarind rice|S|v|1 bowl|200|330|5|54|11|2.5|puliyogare pulihora puli sadam puliodarai புளியோதரை புளி சாதம்
+coconut-rice|Coconut rice|S|v|1 bowl|200|350|5|48|15|3|thengai sadam தேங்காய் சாதம்
+tomato-rice|Tomato rice|S|v|1 bowl|200|280|5|48|8|2|thakkali sadam tomato bath தக்காளி சாதம்
 bisi-bele-bath|Bisi bele bath|S|v|1 bowl|250|330|10|50|10|6|bisibelebath
-sambar-rice|Sambar rice|S|v|1 plate|250|320|9|55|7|5|sambar sadam
-rasam-rice|Rasam rice|S|v|1 plate|250|260|5|50|4|2|rasam sadam
-ragi-mudde|Ragi mudde|S|v|1 ball|150|270|5.5|58|1.5|6|ragi ball ragi sangati
+sambar-rice|Sambar rice|S|v|1 plate|250|320|9|55|7|5|sambar sadam சாம்பார் சாதம்
+rasam-rice|Rasam rice|S|v|1 plate|250|260|5|50|4|2|rasam sadam ரசம் சாதம்
+ragi-mudde|Ragi mudde|S|v|1 ball|150|270|5.5|58|1.5|6|ragi ball ragi sangati ragi kali kezhvaragu kali கேழ்வரகு களி
 akki-roti|Akki roti|S|v|1 roti|100|230|4|38|7|2|rice roti
-kuzhi-paniyaram|Kuzhi paniyaram|S|v|6 pieces|120|220|5|32|8|2|paddu guliyappa ponganalu
-kerala-parotta|Kerala parotta|S|v|1 parotta|90|290|6|38|13|1|porotta malabar parotta barotta
-veg-kothu|Veg kothu parotta|S|v|1 plate|250|520|12|62|25|4|kothu porotta
-kothu-parotta|Chicken kothu parotta|S|n|1 plate|250|600|26|60|28|3|kothu porotta
+kuzhi-paniyaram|Kuzhi paniyaram|TN|v|6 pieces|120|220|5|32|8|2|paddu guliyappa ponganalu குழி பணியாரம்
+kerala-parotta|Kerala parotta|S|v|1 parotta|90|290|6|38|13|1|porotta malabar parotta barotta பரோட்டா
+veg-kothu|Veg kothu parotta|TN|v|1 plate|250|520|12|62|25|4|kothu porotta
+kothu-parotta|Chicken kothu parotta|TN|n|1 plate|250|600|26|60|28|3|kothu porotta கொத்து பரோட்டா
 pazham-pori|Pazham pori|S|v|1 piece|70|200|2|30|8|1.5|banana fritter ethakka appam
 unniyappam|Unniyappam|S|v|3 pieces|60|210|2.5|32|8|1|
-aloo-bonda|Aloo bonda|S|v|1 piece|60|160|3|18|8.5|1.5|urulai bonda
+aloo-bonda|Aloo bonda|S|v|1 piece|60|160|3|18|8.5|1.5|urulai bonda போண்டா
 mysore-bonda|Mysore bonda|S|v|1 piece|40|120|2.5|14|6|0.5|goli baje
-murukku|Murukku|S|v|2 pieces|30|150|2.5|17|8|1|chakli chakkuli
+murukku|Murukku|TN|v|2 pieces|30|150|2.5|17|8|1|chakli chakkuli முறுக்கு
 banana-chips|Banana chips|S|v|1 handful|30|155|0.7|17|10|1.5|kaya varuthathu nendran chips
-sundal|Chana sundal|S|v|1 bowl|100|160|8|22|4.5|7|kadalai sundal
-kozhukattai|Kozhukattai|S|v|2 pieces|80|160|2|30|3.5|1.5|steamed modak kudumulu
-semiya-payasam|Semiya payasam|S|v|1 bowl|150|240|6|34|9|0.5|vermicelli kheer payasa
+sundal|Chana sundal|TN|v|1 bowl|100|160|8|22|4.5|7|kadalai sundal சுண்டல்
+kozhukattai|Kozhukattai|TN|v|2 pieces|80|160|2|30|3.5|1.5|steamed modak kudumulu கொழுக்கட்டை
+semiya-payasam|Semiya payasam|S|v|1 bowl|150|240|6|34|9|0.5|vermicelli kheer payasa சேமியா பாயசம் பாயசம்
 palada|Palada payasam|S|v|1 bowl|150|260|6|38|9|0.3|ada pradhaman
 mysore-pak|Mysore pak|S|v|1 piece|30|165|1.5|15|11|0.5|
-filter-coffee|Filter coffee|S|v|1 tumbler|150|95|3|12|3.5|0|kaapi madras coffee degree coffee
+filter-coffee|Filter coffee|TN|v|1 tumbler|150|95|3|12|3.5|0|kaapi madras coffee degree coffee காபி
 ragi-malt|Ragi malt|S|v|1 glass|250|170|6|28|4|2.5|ragi java ragi ambli ragi kanji
-jigarthanda|Jigarthanda|S|v|1 glass|300|380|8|58|13|0|
-chicken-chettinad|Chicken chettinad|S|n|1 bowl|200|340|28|8|22|2|chettinad chicken kozhi kuzhambu
-chicken-65|Chicken 65|S|n|6 pieces|150|350|25|12|23|0.5|
+jigarthanda|Jigarthanda|TN|v|1 glass|300|380|8|58|13|0|ஜிகர்தண்டா
+chicken-chettinad|Chicken chettinad|TN|n|1 bowl|200|340|28|8|22|2|chettinad chicken kozhi kuzhambu செட்டிநாடு கோழி
+chicken-65|Chicken 65|TN|n|6 pieces|150|350|25|12|23|0.5|சிக்கன் 65
 hyd-chicken-biryani|Hyderabadi chicken biryani|S|n|1 plate|350|600|28|70|22|3|dum biryani
 hyd-mutton-biryani|Hyderabadi mutton biryani|S|n|1 plate|350|680|30|70|30|3|kacchi biryani
 malabar-biryani|Malabar chicken biryani|S|n|1 plate|350|620|28|72|23|3|thalassery biryani kozhikode
-kerala-fish-curry|Kerala fish curry|S|n|1 bowl|200|260|22|7|16|1.5|meen curry meen kuzhambu fish moilee
-fish-fry|Fish fry|S|n|1 piece|100|200|20|4|12|0.5|meen varuval meen pollichathu tawa fish
+kerala-fish-curry|Kerala fish curry|S|n|1 bowl|200|260|22|7|16|1.5|meen curry fish moilee
+fish-fry|Fish fry|S|n|1 piece|100|200|20|4|12|0.5|meen varuval meen pollichathu tawa fish மீன் வறுவல்
 prawn-masala|Prawn masala|S|n|1 bowl|150|230|22|8|12|1.5|chemmeen roast eral prawn curry
 egg-roast|Kerala egg roast|S|e|1 bowl|180|250|14|9|18|2|mutta roast
 mutton-sukka|Mutton sukka|S|n|1 bowl|150|360|28|5|25|1|mutton chukka pepper mutton
-roti|Roti / chapati|N|v|1 medium|40|100|3|18|1.5|2.5|chapati chapathi rotli fulka
+kal-dosai|Kal dosai|TN|v|1 dosa|90|150|3.5|26|3.5|1|kal dosa home dosai கல் தோசை
+podi-dosai|Podi dosai|TN|v|1 dosa|100|230|5|28|11|2|podi dosa gunpowder dosa பொடி தோசை
+kari-dosai|Kari dosai|TN|n|1 dosa|200|420|20|32|23|2|madurai kari dosa mutton keema dosa கறி தோசை
+inippu-paniyaram|Inippu paniyaram|TN|v|6 pieces|120|260|4|44|8|1.5|sweet paniyaram இனிப்பு பணியாரம்
+sevai|Lemon sevai|TN|v|1 bowl|150|230|3.5|40|6|1.5|sevai rice noodles coconut sevai சேவை
+arisi-upma|Arisi upma|TN|v|1 bowl|200|260|5|44|7|2|rice upma அரிசி உப்புமா
+godhumai-upma|Godhumai rava upma|TN|v|1 bowl|200|240|6.5|38|7|4|wheat upma broken wheat கோதுமை உப்புமா
+rava-kichadi|Rava kichadi|TN|v|1 bowl|200|280|6|38|11|3|kichdi ரவா கிச்சடி
+poori-masala|Poori masala|TN|v|1 plate|200|420|7|50|21|4|poori kizhangu puri bhaji பூரி மசால் பூரி கிழங்கு
+idli-sambar-plate|Idli sambar plate|TN|v|1 plate|280|290|10|46|8|6|2 idli with sambar and chutney tiffin இட்லி சாம்பார்
+pongal-vada|Pongal vada plate|TN|v|1 plate|380|520|15|64|23|6|pongal with vada sambar chutney tiffin பொங்கல் வடை
+kambu-koozh|Kambu koozh|TN|v|1 glass|250|130|4|24|2|3|pearl millet porridge bajra kambu kool கம்பு கூழ்
+thinai-pongal|Thinai pongal|TN|v|1 bowl|200|280|8|40|10|4|foxtail millet pongal தினை பொங்கல்
+nombu-kanji|Nombu kanji|TN|v|1 bowl|250|200|6|30|6|1.5|rice porridge ramzan kanji நோன்பு கஞ்சி
+pazhaya-sadam|Pazhaya sadam|TN|v|1 bowl|250|200|5|40|2|1|fermented rice neer sadam pazhaiya soru பழைய சாதம்
+ellu-sadam|Ellu sadam|TN|v|1 bowl|200|340|7|48|13|4|sesame rice எள்ளு சாதம்
+ghee-rice|Ghee rice|TN|v|1 bowl|200|330|5|52|11|1|nei choru nei sadam நெய் சோறு
+kuska|Kuska|TN|v|1 plate|250|400|7|60|14|2|plain biryani rice kuska biryani குஸ்கா
+paruppu-sadam|Paruppu sadam|TN|v|1 plate|250|340|10|54|9|4|dal rice with ghee பருப்பு சாதம்
+paruppu-ghee|Paruppu with ghee|TN|v|1 bowl|150|170|9|20|6|5|plain dal paruppu kadaiyal பருப்பு
+ennai-kathirikkai|Ennai kathirikkai kuzhambu|TN|v|1 bowl|150|190|3|14|14|5|brinjal kuzhambu kathirikai எண்ணெய் கத்தரிக்காய் குழம்பு
+poricha-kuzhambu|Poricha kuzhambu|TN|v|1 bowl|150|150|6|14|8|4|பொரிச்ச குழம்பு
+milagu-kuzhambu|Milagu kuzhambu|TN|v|1 bowl|100|120|2|10|8|2|pepper kuzhambu மிளகு குழம்பு
+paruppu-urundai|Paruppu urundai kuzhambu|TN|v|1 bowl|180|280|11|26|15|6|lentil ball kuzhambu பருப்பு உருண்டை குழம்பு
+pitlai|Pavakkai pitlai|TN|v|1 bowl|150|160|6|18|7|5|bitter gourd pitlai பாகற்காய் பிட்லை
+keerai-masiyal|Keerai masiyal|TN|v|1 bowl|150|110|6|10|5|4|spinach dal mashed greens கீரை மசியல்
+keerai-poriyal|Keerai poriyal|TN|v|1 bowl|100|90|3.5|7|5.5|3.5|greens stir fry கீரை பொரியல்
+kathirikkai-poriyal|Kathirikkai poriyal|TN|v|1 bowl|100|110|2|9|7.5|4|brinjal fry கத்தரிக்காய் பொரியல்
+vendakkai-poriyal|Vendakkai poriyal|TN|v|1 bowl|100|120|2.5|10|8|4|okra fry ladies finger வெண்டைக்காய் பொரியல்
+urulai-roast|Urulaikizhangu roast|TN|v|1 bowl|100|170|2.5|22|8|2.5|potato roast potato fry உருளைக்கிழங்கு வறுவல்
+kadappa|Kumbakonam kadappa|TN|v|1 bowl|150|180|7|16|10|4|கடப்பா
+vada-curry|Vada curry|TN|v|1 bowl|150|230|8|18|14|4|vadacurry chennai வடகறி
+veg-kurma|Veg kurma|TN|v|1 bowl|150|210|4|14|15.5|3.5|hotel kurma parotta kurma குருமா
+chicken-salna|Chicken salna|TN|n|1 bowl|150|220|14|6|15.5|1.5|parotta salna சால்னா
+thakkali-thokku|Thakkali thokku|TN|v|1 tbsp|20|40|0.4|3|3|0.6|tomato thokku pickle தக்காளி தொக்கு
+milagai-podi|Milagai podi with oil|TN|v|1 tbsp|15|85|2|3.5|7|1|idli podi gunpowder மிளகாய் பொடி
+kara-chutney|Kara chutney|TN|v|2 tbsp|30|60|0.8|4|4.5|1|red chutney onion tomato chutney கார சட்னி
+pudina-chutney|Pudina chutney|TN|v|2 tbsp|30|45|1|3|3.2|1|mint chutney புதினா சட்னி
+ambur-biryani|Ambur chicken biryani|TN|n|1 plate|350|590|28|66|23|2.5|ஆம்பூர் பிரியாணி
+dindigul-biryani|Dindigul chicken biryani|TN|n|1 plate|350|610|29|66|25|2.5|seeraga samba thalappakatti திண்டுக்கல் பிரியாணி
+dindigul-mutton-biryani|Dindigul mutton biryani|TN|n|1 plate|350|680|30|66|32|2.5|seeraga samba மட்டன் பிரியாணி
+pepper-chicken|Pepper chicken|TN|n|1 bowl|150|300|26|5|19.5|1|milagu kozhi chicken pepper fry மிளகு கோழி
+nattu-kozhi|Nattu kozhi kuzhambu|TN|n|1 bowl|200|280|24|7|17|2|country chicken curry நாட்டுக்கோழி குழம்பு
+mutton-kuzhambu|Mutton kuzhambu|TN|n|1 bowl|200|380|26|8|27|2|kari kuzhambu aatu kari ஆட்டுக்கறி குழம்பு மட்டன் குழம்பு
+kola-urundai|Kola urundai|TN|n|4 pieces|100|290|16|10|21|1|mutton kola meatball கோலா உருண்டை
+meen-kuzhambu|Meen kuzhambu|TN|n|1 bowl|200|240|20|9|13.5|2|tamil fish curry tamarind fish மீன் குழம்பு
+nethili-fry|Nethili fry|TN|n|1 plate|100|260|22|8|15.5|0.5|anchovy fry nethili meen varuval நெத்திலி வறுவல்
+eral-thokku|Eral thokku|TN|n|1 bowl|150|240|22|7|13.5|1.5|prawn thokku இறால் தொக்கு
+nandu-masala|Nandu masala|TN|n|1 bowl|150|210|20|7|11|1.5|crab masala நண்டு மசாலா
+muttai-kuzhambu|Muttai kuzhambu|TN|e|1 bowl|200|250|14|9|17.5|2|egg kuzhambu 2 eggs முட்டை குழம்பு
+kalakki|Kalakki|TN|e|1 piece|80|150|9|1.5|12|0|madurai kalakki half omelette கலக்கி
+paya|Aattukaal paya|TN|n|1 bowl|250|300|22|6|21|1|mutton paya trotters ஆட்டுக்கால் பாயா
+egg-kothu|Egg kothu parotta|TN|e|1 plate|250|560|19|60|27|3|muttai kothu முட்டை கொத்து பரோட்டா
+bun-parotta|Bun parotta|TN|v|1 piece|100|330|6.5|40|16|1|madurai bun parotta பன் பரோட்டா
+chilli-parotta|Chilli parotta|TN|v|1 plate|200|520|10|60|27|3|சில்லி பரோட்டா
+vazhakkai-bajji|Vazhakkai bajji|TN|v|2 pieces|80|200|3|22|11|2|raw banana bajji வாழைக்காய் பஜ்ஜி
+keerai-vadai|Keerai vadai|TN|v|1 piece|40|125|5|12|6.5|2.5|spinach vada கீரை வடை
+pattani-sundal|Pattani sundal|TN|v|1 bowl|100|140|7|20|3.5|6|peas sundal பட்டாணி சுண்டல்
+thattai|Thattai|TN|v|3 pieces|30|150|2.5|17|8|1|nippattu chekkalu தட்டை
+seedai|Seedai|TN|v|1 handful|30|155|2|18|8.5|0.5|cheedai சீடை
+ribbon-pakoda|Ribbon pakoda|TN|v|1 handful|30|160|3|16|9.5|1.5|ola pakoda ரிப்பன் பக்கோடா
+madras-mixture|Madras mixture|TN|v|1 handful|30|165|4|14|10.5|2|kara mixture kaara sev மிக்சர் காராசேவு
+adhirasam|Adhirasam|TN|v|1 piece|40|160|1.5|26|6|0.5|athirasam அதிரசம்
+palkova|Palkova|TN|v|1 piece|30|120|3.5|15|5.5|0|srivilliputhur paalkova milk sweet பால்கோவா
+tirunelveli-halwa|Tirunelveli halwa|TN|v|1 piece|50|210|1.5|28|10.5|0.3|wheat halwa iruttukadai அல்வா
+kasi-halwa|Kasi halwa|TN|v|1 bowl|100|230|1|32|11|1|ash gourd halwa poosanikai காசி அல்வா
+ellu-urundai|Ellu urundai|TN|v|1 piece|20|95|2.5|10|5|1.5|sesame ladoo til ladoo எள்ளு உருண்டை
+kadalai-mittai|Kadalai mittai|TN|v|1 piece|25|125|4|13|6.5|1.2|peanut chikki கடலை மிட்டாய்
+paruppu-payasam|Paruppu payasam|TN|v|1 bowl|150|260|6|40|8.5|2|moong dal payasam பருப்பு பாயசம்
+thengai-burfi|Thengai burfi|TN|v|1 piece|30|125|1|16|6.5|1.5|coconut barfi தேங்காய் பர்பி
+nannari-sarbath|Nannari sarbath|TN|v|1 glass|250|120|0|30|0|0|sarsaparilla sharbat நன்னாரி சர்பத்
+paruthi-paal|Paruthi paal|TN|v|1 glass|200|180|5|24|7|1|cottonseed milk பருத்திப்பால்
+rose-milk|Rose milk|TN|v|1 glass|250|220|7.5|32|7|0|ரோஸ் மில்க்
+panakam|Panakam|TN|v|1 glass|200|110|0.3|27|0|0.2|panagam jaggery ginger drink பானகம்
+sukku-coffee|Sukku malli coffee|TN|v|1 cup|150|60|0.5|14|0.3|0.3|dry ginger coffee chukku kaapi சுக்கு மல்லி காபி
+nungu|Nungu|TN|v|3 pieces|100|45|0.8|10|0.1|1|ice apple palm fruit nongu நுங்கு
+vangi-bath|Vangi bath|S|v|1 bowl|200|300|5|46|10.5|4|brinjal rice
+kappa|Kappa puzhukku|S|v|1 bowl|150|220|1.5|42|5|3|tapioca kappa mashed tapioca
+ela-ada|Ela ada|S|v|1 piece|60|130|1.5|24|3|1.5|ada steamed rice parcel
+erissery|Erissery|S|v|1 bowl|150|170|5|20|8|5|pumpkin erissery
+olan|Olan|S|v|1 bowl|150|130|3|10|9|2.5|ash gourd coconut milk
+pathiri|Pathiri|S|v|2 pieces|60|150|3|31|1.5|1|ari pathiri rice roti
+chicken-stew|Kerala chicken stew|S|n|1 bowl|200|300|22|9|20|2|ishtu
+beef-fry|Kerala beef fry|S|n|1 bowl|150|360|30|6|24|1|beef ularthiyathu
+benne-dosa|Davangere benne dosa|S|v|1 dosa|120|300|5|34|16|1.5|butter dosa
+mangalore-buns|Mangalore buns|S|v|1 piece|70|230|4|34|9|1|banana buns
+maddur-vada|Maddur vada|S|v|1 piece|50|190|3|20|11|1|
+kosambari|Kosambari|S|v|1 bowl|100|90|5|12|2.5|4|moong dal salad
+upma-pesarattu|Upma pesarattu|S|v|1 dosa|200|400|13|56|14|7|mla pesarattu
+gutti-vankaya|Gutti vankaya|S|v|1 bowl|150|220|4|14|16.5|5|stuffed brinjal curry ennai vankaya
+punugulu|Punugulu|S|v|6 pieces|90|230|5|26|12|1.5|
+andhra-chicken|Andhra chicken curry|S|n|1 bowl|200|330|28|8|21|2|kodi kura
+ulavacharu|Ulavacharu|S|v|1 bowl|150|120|6|16|3.5|4|horse gram soup kollu rasam
+haleem|Hyderabadi haleem|S|n|1 bowl|250|450|30|30|24|4|haleem
+double-ka-meetha|Double ka meetha|S|v|1 bowl|100|330|6|40|16|1|bread pudding
+qubani-ka-meetha|Qubani ka meetha|S|v|1 bowl|100|230|1.5|50|2.5|3|apricot dessert
+mirchi-ka-salan|Mirchi ka salan|S|v|1 bowl|150|220|4.5|12|17|3.5|
+rava-laddu|Rava laddu|S|v|1 laddu|35|160|2|20|8|0.5|rava ladoo
+roti|Roti / chapati|N|v|1 medium|40|100|3|18|1.5|2.5|chapati chapathi rotli fulka சப்பாத்தி
 phulka|Phulka|N|v|1 small|30|75|2.4|14|0.5|2|
 ghee-roti|Roti with ghee|N|v|1 medium|45|140|3|18|6|2.5|ghee chapati
 tandoori-roti|Tandoori roti|N|v|1 roti|60|150|5|30|1|3|
@@ -620,7 +718,7 @@ plain-paratha|Plain paratha|N|v|1 paratha|60|200|4|26|9|2.5|parantha
 lachha-paratha|Lachha paratha|N|v|1 paratha|80|280|5|32|14|2|laccha
 makki-roti|Makki di roti|N|v|1 roti|70|200|4|30|7|3|makki ki roti corn roti
 missi-roti|Missi roti|N|v|1 roti|60|170|6|26|4.5|4|besan roti
-puri|Puri|N|v|1 piece|25|100|1.8|11|5.5|0.8|poori
+puri|Puri|N|v|1 piece|25|100|1.8|11|5.5|0.8|poori பூரி
 bhatura|Bhatura|N|v|1 piece|80|290|6|38|13|1.5|bhature
 jeera-rice|Jeera rice|N|v|1 bowl|150|240|4|42|6|1|
 veg-pulao|Veg pulao|N|v|1 bowl|200|300|6|48|9|3|pulav pilaf
@@ -665,7 +763,7 @@ rogan-josh|Mutton rogan josh|N|n|1 bowl|200|420|30|8|30|1.5|mutton curry gosht
 keema|Mutton keema|N|n|1 bowl|150|340|25|6|24|2|kheema mince
 seekh-kebab|Seekh kebab|N|n|2 pieces|100|250|18|4|18|0.5|
 egg-curry|Egg curry|N|e|1 bowl|200|260|14|10|18|2|anda curry 2 eggs
-egg-bhurji|Egg bhurji|N|e|2 eggs|120|220|13|4|17|1|anda bhurji scrambled eggs
+egg-bhurji|Egg bhurji|N|e|2 eggs|120|220|13|4|17|1|anda bhurji scrambled eggs muttai podimas முட்டை பொடிமாஸ்
 amritsari-fish|Amritsari fish fry|N|n|1 plate|150|300|24|12|17|0.5|
 poha|Poha|W|v|1 plate|150|250|5|40|8|2|kanda poha aval avalakki atukulu flattened rice
 dhokla|Dhokla|W|v|4 pieces|100|160|6|26|4|2|khaman
@@ -690,8 +788,8 @@ thukpa|Chicken thukpa|E|n|1 bowl|350|320|20|40|8|3|noodle soup
 samosa|Samosa|ST|v|1 piece|70|260|4|28|15|2.5|
 kachori|Kachori|ST|v|1 piece|60|240|5|24|14|2.5|khasta kachori
 aloo-tikki|Aloo tikki|ST|v|2 pieces|120|260|4|30|14|3|
-pakora|Onion pakora|ST|v|5 pieces|80|240|5|20|15.5|3|bhajiya pakoda bhaji onion bajji vengaya bajji
-mirchi-bajji|Mirchi bajji|ST|v|2 pieces|100|240|4|22|15|2.5|mirapakaya bajji mirchi vada
+pakora|Onion pakora|ST|v|5 pieces|80|240|5|20|15.5|3|bhajiya pakoda bhaji onion bajji vengaya bajji பக்கோடா
+mirchi-bajji|Mirchi bajji|ST|v|2 pieces|100|240|4|22|15|2.5|mirapakaya bajji mirchi vada மிளகாய் பஜ்ஜி
 paneer-pakora|Paneer pakora|ST|v|4 pieces|100|300|12|16|21|1.5|
 pani-puri|Pani puri|ST|v|6 pieces|120|200|4|32|6.5|2.5|golgappa puchka gupchup
 bhel-puri|Bhel puri|ST|v|1 plate|150|280|6|42|10|3.5|bhel churmuri
@@ -726,25 +824,25 @@ shrikhand|Shrikhand|SW|v|1 katori|100|260|6|36|10|0|
 modak|Fried modak|SW|v|1 piece|40|150|2|20|7|1|
 ice-cream|Vanilla ice cream|SW|v|1 scoop|60|125|2|14|7|0.3|
 pastry|Chocolate pastry|SW|v|1 piece|80|330|4|40|17|1.5|cake slice
-masala-chai|Masala chai|D|v|1 cup|150|105|3|15|3.5|0|tea chai cutting chai milk tea
+masala-chai|Masala chai|D|v|1 cup|150|105|3|15|3.5|0|tea chai cutting chai milk tea டீ
 chai-nosugar|Chai without sugar|D|v|1 cup|150|60|3|5|3.2|0|sugar free tea
 black-coffee|Black coffee|D|v|1 cup|200|5|0.3|0|0|0|americano
 green-tea|Green tea|D|v|1 cup|200|2|0|0.5|0|0|
-milk|Milk (toned)|D|v|1 glass|250|145|7.5|12|7.5|0|doodh paal haalu
+milk|Milk (toned)|D|v|1 glass|250|145|7.5|12|7.5|0|doodh paal haalu பால்
 haldi-doodh|Turmeric milk|D|v|1 glass|250|180|8|18|8|0.3|haldi doodh golden milk
-buttermilk|Buttermilk|D|v|1 glass|250|50|2.5|4|2.5|0|chaas majjige neer mor moru mattha
+buttermilk|Buttermilk|D|v|1 glass|250|50|2.5|4|2.5|0|chaas majjige neer mor moru mattha sambharam மோர்
 sweet-lassi|Sweet lassi|D|v|1 glass|250|260|8|40|7|0|
 salted-lassi|Salted lassi|D|v|1 glass|250|140|7|10|7.5|0|
 mango-lassi|Mango lassi|D|v|1 glass|250|300|7|50|7|1|
 nimbu-pani|Nimbu pani|D|v|1 glass|250|80|0.2|20|0|0.2|lemonade shikanji lemon juice
-coconut-water|Tender coconut water|D|v|1 glass|250|48|1.7|9|0.5|2.5|elaneer nariyal pani ilaneer
+coconut-water|Tender coconut water|D|v|1 glass|250|48|1.7|9|0.5|2.5|elaneer nariyal pani ilaneer இளநீர்
 sugarcane|Sugarcane juice|D|v|1 glass|250|180|0.5|45|0|0|ganne ka ras karumbu
 badam-milk|Badam milk|D|v|1 glass|250|260|9|30|11|1|almond milk
 orange-juice|Fresh orange juice|D|v|1 glass|250|110|1.7|26|0.5|0.5|mosambi juice sweet lime
 cola|Soft drink|D|v|1 can|330|140|0|35|0|0|cola soda fizzy drink
 cold-coffee|Cold coffee|D|v|1 glass|300|260|7|36|10|0|
 protein-shake|Whey protein shake|D|v|1 scoop|30|120|24|3|1.5|0|whey
-banana|Banana|F|v|1 medium|120|105|1.3|27|0.4|3|kela vazhaipazham
+banana|Banana|F|v|1 medium|120|105|1.3|27|0.4|3|kela vazhaipazham வாழைப்பழம்
 apple|Apple|F|v|1 medium|180|95|0.5|25|0.3|4.4|seb
 mango|Mango|F|v|1 medium|200|120|1.6|30|0.8|3.2|aam alphonso banganapalli
 papaya|Papaya|F|v|1 cup|145|62|0.7|16|0.4|2.5|papita
@@ -763,13 +861,13 @@ walnuts|Walnuts|F|v|4 halves|14|92|2.1|1.9|9.2|1|akhrot
 peanuts|Roasted peanuts|F|v|1 handful|30|170|7.5|5|14|2.5|groundnut moongphali verkadalai kadalekai
 kachumber|Green salad|F|v|1 bowl|100|35|1.3|7|0.3|2|kachumber cucumber tomato onion salad
 sprouts|Sprouts salad|F|v|1 bowl|100|100|7|15|1.5|4|moong sprouts usal
-steamed-rice|Steamed rice|B|v|1 bowl|150|195|4|43|0.4|0.6|white rice chawal annam sadam boiled rice plain rice
+steamed-rice|Steamed rice|B|v|1 bowl|150|195|4|43|0.4|0.6|white rice chawal annam sadam boiled rice plain rice soru சாதம் சோறு
 brown-rice|Brown rice|B|v|1 bowl|150|165|3.8|34|1.3|2.7|
-boiled-egg|Boiled egg|B|e|1 egg|50|78|6.3|0.6|5.3|0|anda mutta
+boiled-egg|Boiled egg|B|e|1 egg|50|78|6.3|0.6|5.3|0|anda mutta முட்டை
 omelette|Omelette (2 eggs)|B|e|1 omelette|120|200|13|2|15|0.5|masala omelette
 egg-white|Egg white|B|e|1 egg white|33|17|3.6|0.2|0|0|
 paneer|Paneer|B|v|100 g|100|265|18|4|20|0|cottage cheese
-curd|Curd|B|v|1 katori|100|60|3.5|4.5|3|0|dahi thayir mosaru perugu yogurt
+curd|Curd|B|v|1 katori|100|60|3.5|4.5|3|0|dahi thayir mosaru perugu yogurt தயிர்
 soya-chunks|Soya chunks (cooked)|B|v|1 katori|100|110|16|9|0.5|4|meal maker nutrela
 chicken-breast|Grilled chicken breast|B|n|100 g|100|165|31|0|3.6|0|
 fish-grilled|Grilled fish|B|n|100 g|100|140|24|0|4.5|0|
@@ -786,7 +884,7 @@ jaggery|Jaggery|B|v|1 piece|10|38|0|9.8|0|0|gur vellam bella
 honey|Honey|B|v|1 tsp|7|21|0|5.7|0|0|shahad
 peanut-butter|Peanut butter|B|v|1 tbsp|16|95|4|3|8|1|
 pickle|Mango pickle|B|v|1 tsp|10|25|0.2|1|2.3|0.3|achar avakaya maangai oorugai
-papad|Papad (roasted)|B|v|1 piece|12|40|2.5|7|0.3|1.5|appalam pappadam
+papad|Papad (roasted)|B|v|1 piece|12|40|2.5|7|0.3|1.5|appalam pappadam அப்பளம்
 pizza|Margherita pizza|G|v|1 slice|100|270|11|33|10|2|
 veg-burger|Veg burger|G|v|1 burger|150|380|9|48|17|3|aloo tikki burger
 chicken-burger|Chicken burger|G|n|1 burger|170|440|22|42|20|2|
@@ -808,8 +906,8 @@ const FOODS = RAW.trim().split('\n').map(line => {
   return {id,name,cat,diet,serving,g:+g,kcal:+kcal,p:+p,c:+c,f:+f,fib:+fib,key:(name+' '+(al||'')).toLowerCase()};
 });
 const FOOD_BY_ID = Object.fromEntries(FOODS.map(f => [f.id, f]));
-const CAT_NAME = {S:'South Indian',N:'North Indian',W:'West Indian',E:'East & North-East',ST:'Street food & snacks',SW:'Sweets',D:'Drinks',F:'Fruits, nuts & salads',B:'Staples & basics',G:'Fast food & Indo-Chinese',MY:'My foods',AI:'Estimated'};
-const CAT_CHIPS = [['all','All'],['S','South Indian'],['N','North Indian'],['W','West'],['E','East'],['ST','Snacks'],['SW','Sweets'],['D','Drinks'],['F','Fruits & nuts'],['B','Staples'],['G','Fast food']];
+const CAT_NAME = {S:'South Indian',TN:'Tamil Nadu',N:'North Indian',W:'West Indian',E:'East & North-East',ST:'Street food & snacks',SW:'Sweets',D:'Drinks',F:'Fruits, nuts & salads',B:'Staples & basics',G:'Fast food & Indo-Chinese',MY:'My foods',AI:'Estimated'};
+const CAT_CHIPS = [['all','All'],['S','South Indian'],['TN','Tamil'],['N','North Indian'],['W','West'],['E','East'],['ST','Snacks'],['SW','Sweets'],['D','Drinks'],['F','Fruits & nuts'],['B','Staples'],['G','Fast food']];
 const DIET_NAME = {v:'Vegetarian',e:'Contains egg',n:'Non-vegetarian'};
 
 const MEALS = [
@@ -820,11 +918,16 @@ const MEALS = [
   {id:'dinner',name:'Dinner',time:'8–9 pm',share:.25},
 ];
 const SUGGEST = {
-  breakfast:{S:['idli','plain-dosa','masala-dosa','ven-pongal','rava-upma','medu-vada','sambar','coconut-chutney','filter-coffee'],N:['aloo-paratha','poha','besan-chilla','roti','curd','masala-chai','boiled-egg','omelette']},
-  msnack:{S:['banana','buttermilk','sundal','coconut-water','guava'],N:['apple','roasted-chana','almonds','makhana','banana']},
-  lunch:{S:['steamed-rice','sambar','rasam','beans-poriyal','curd-rice','sambar-rice','chicken-chettinad','kerala-fish-curry'],N:['roti','dal-tadka','rajma-chawal','jeera-rice','mix-veg','curd','chicken-curry','palak-paneer']},
-  esnack:{S:['filter-coffee','sundal','murukku','masala-vada','banana-chips'],N:['masala-chai','samosa','roasted-chana','makhana','marie','bhel-puri']},
-  dinner:{S:['plain-dosa','idiyappam','appam','veg-stew','kadala-curry','egg-roast','rasam-rice'],N:['roti','dal-tadka','palak-paneer','khichdi','paneer-bhurji','tandoori-chicken','raita']},
+  breakfast:{S:['idli','plain-dosa','masala-dosa','ven-pongal','rava-upma','medu-vada','sambar','coconut-chutney','filter-coffee'],N:['aloo-paratha','poha','besan-chilla','roti','curd','masala-chai','boiled-egg','omelette'],
+    T:['idli','kal-dosai','ven-pongal','podi-dosai','medu-vada','sambar','coconut-chutney','kara-chutney','filter-coffee','poori-masala']},
+  msnack:{S:['banana','buttermilk','sundal','coconut-water','guava'],N:['apple','roasted-chana','almonds','makhana','banana'],
+    T:['buttermilk','sundal','banana','coconut-water','kambu-koozh','guava']},
+  lunch:{S:['steamed-rice','sambar','rasam','beans-poriyal','curd-rice','sambar-rice','chicken-chettinad','kerala-fish-curry'],N:['roti','dal-tadka','rajma-chawal','jeera-rice','mix-veg','curd','chicken-curry','palak-paneer'],
+    T:['steamed-rice','sambar','rasam','kootu','keerai-poriyal','curd-rice','vatha-kuzhambu','chicken-chettinad','meen-kuzhambu','papad']},
+  esnack:{S:['filter-coffee','sundal','murukku','masala-vada','banana-chips'],N:['masala-chai','samosa','roasted-chana','makhana','marie','bhel-puri'],
+    T:['filter-coffee','masala-vada','sundal','vazhakkai-bajji','murukku','thattai']},
+  dinner:{S:['plain-dosa','idiyappam','appam','veg-stew','kadala-curry','egg-roast','rasam-rice'],N:['roti','dal-tadka','palak-paneer','khichdi','paneer-bhurji','tandoori-chicken','raita'],
+    T:['idli','kal-dosai','idiyappam','roti','veg-kurma','kara-chutney','rasam-rice','muttai-kuzhambu']},
 };
 const ACTIVITY = [
   {id:'sedentary',f:1.2,name:'Mostly sitting',desc:'Desk job, under 3,000 steps a day'},
@@ -1144,7 +1247,7 @@ const mealName = id => (MEALS.find(m => m.id === id) || MEALS[0]).name;
 function dietOk(f, diet){ return diet === 'nonveg' || f.diet === 'v' || (diet === 'egg' && f.diet === 'e'); }
 function suggestions(meal, p){
   const s = SUGGEST[meal], c = p.cuisine;
-  let ids = c === 'south' ? s.S : c === 'north' ? s.N : s.S.flatMap((x, i) => [x, s.N[i]]).filter(Boolean);
+  let ids = c === 'tamil' ? s.T : c === 'south' ? s.S : c === 'north' ? s.N : s.S.flatMap((x, i) => [x, s.N[i]]).filter(Boolean);
   return [...new Set(ids)].map(id => FOOD_BY_ID[id]).filter(f => f && dietOk(f, p.diet));
 }
 function addEntry(k, meal, food, qty, unit){
@@ -1469,7 +1572,7 @@ function foodRow(f){
 }
 function searchFoods(q, cat, vegOnly){
   let list = FOODS.concat(prefs().custom.map(c => ({...c, key:c.name.toLowerCase()})));
-  if (cat !== 'all') list = list.filter(f => f.cat === cat);
+  if (cat !== 'all') list = list.filter(f => f.cat === cat || (cat === 'S' && f.cat === 'TN'));
   if (vegOnly) list = list.filter(f => f.diet === 'v');
   q = q.trim().toLowerCase();
   if (!q) return list;
@@ -1717,7 +1820,7 @@ function coachContext(){
   const wavg = logged.length ? logged.reduce((s, x) => s + totals(x).kcal, 0) / logged.length : 0;
   const pavg = logged.length ? logged.reduce((s, x) => s + totals(x).p, 0) / logged.length : 0;
   const wl = weights();
-  return `PROFILE: ${p.sex === 'm' ? 'man' : 'woman'}, ${p.age} y, ${p.heightCm} cm, ${fmt1(p.weightKg)} kg, ${pl.act.name.toLowerCase()}; goal: ${p.goal === 'maintain' ? 'maintain weight' : `${p.goal} weight at ${p.pace} kg/week to ${p.targetWeightKg} kg`}; eats ${p.diet === 'veg' ? 'vegetarian' : p.diet === 'egg' ? 'vegetarian plus eggs' : 'non-vegetarian'}, ${p.cuisine === 'south' ? 'mostly South Indian' : p.cuisine === 'north' ? 'mostly North Indian' : 'both South and North Indian'} food.
+  return `PROFILE: ${p.sex === 'm' ? 'man' : 'woman'}, ${p.age} y, ${p.heightCm} cm, ${fmt1(p.weightKg)} kg, ${pl.act.name.toLowerCase()}; goal: ${p.goal === 'maintain' ? 'maintain weight' : `${p.goal} weight at ${p.pace} kg/week to ${p.targetWeightKg} kg`}; eats ${p.diet === 'veg' ? 'vegetarian' : p.diet === 'egg' ? 'vegetarian plus eggs' : 'non-vegetarian'}, ${p.cuisine === 'tamil' ? 'mostly Tamil Nadu home' : p.cuisine === 'south' ? 'mostly South Indian' : p.cuisine === 'north' ? 'mostly North Indian' : 'both South and North Indian'} food.
 PLAN: ${fmt(pl.target)} kcal a day; protein ${pl.pG} g, carbs ${pl.cG} g, fat ${pl.fG} g, fibre ${pl.fib} g; water ${pl.water} glasses.
 TODAY (${dayLabel(t)}, now ${new Date().toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit'})}): eaten ${fmt(tt.kcal)} kcal, burnt ${fmt(b)} kcal in activity, ${fmt(pl.target + b - tt.kcal)} kcal left. Protein ${fmt(tt.p)} g, carbs ${fmt(tt.c)} g, fat ${fmt(tt.f)} g, fibre ${fmt(tt.fib)} g. Water ${d.water || 0} glasses.
 ${meals}
@@ -1832,7 +1935,7 @@ function renderProfile(){
         ${numField('pf-tw', 'targetWeightKg', 'Target weight', fmt1(p.targetWeightKg), 'kg', 30, 250, 0.1)}</div></section>
       <section class="card form-card"><h3>Food & targets</h3><div class="form-grid">
         <div class="field"><label for="pf-diet">I eat</label>${sel('pf-diet', 'diet', [['veg','Vegetarian'],['egg','Vegetarian + eggs'],['nonveg','Non-vegetarian']], p.diet)}</div>
-        <div class="field"><label for="pf-cui">Mostly</label>${sel('pf-cui', 'cuisine', [['south','South Indian'],['north','North Indian'],['both','A mix of both']], p.cuisine)}</div>
+        <div class="field"><label for="pf-cui">Mostly</label>${sel('pf-cui', 'cuisine', [['tamil','Tamil'],['south','South Indian'],['north','North Indian'],['both','A mix of both']], p.cuisine)}</div>
         <div class="field"><label for="pf-split">Macro split</label>${sel('pf-split', 'split', Object.entries(SPLITS).map(([k, s]) => [k, `${s.name} · ${s.p}/${s.c}/${s.f}`]), p.split)}</div>
         ${numField('pf-water', 'waterGoal', 'Water goal', pl.water, 'glasses', 4, 20, 1)}</div></section>
       <section class="card form-card"><h3>Your data</h3>${where}
@@ -1903,7 +2006,7 @@ function obHTML(){
       <div class="field"><span class="label">Pace</span><div class="seg">${obSeg('pace', [[0.25,'Gentle · ¼ kg/wk'],[0.5,'Steady · ½ kg/wk']].concat(d.goal === 'lose' ? [[0.75,'Fast · ¾ kg/wk']] : []), d.pace)}</div></div>` : ''}`;
   else if (s === 'food') body = `${stepLbl('Food')}<h1>How do you eat?</h1>
     <div class="field"><span class="label">I eat</span><div class="seg">${obSeg('diet', [['veg','Vegetarian'],['egg','Veg + eggs'],['nonveg','Non-veg']], d.diet)}</div></div>
-    <div class="field"><span class="label">My meals are mostly</span>${obOpts('cuisine', [['south','South Indian','Idli, dosa, sambar, rasam, curd rice'],['north','North Indian','Roti, dal, sabzi, paratha, rajma'],['both','A mix of both','A bit of everything']], d.cuisine)}</div>
+    <div class="field"><span class="label">My meals are mostly</span>${obOpts('cuisine', [['tamil','Tamil','Kal dosai, kuzhambu, kootu, poriyal, rasam, thayir sadam'],['south','South Indian','Idli, dosa, sambar, rasam, curd rice'],['north','North Indian','Roti, dal, sabzi, paratha, rajma'],['both','A mix of both','A bit of everything']], d.cuisine)}</div>
     <p class="hint">This shapes quick-add suggestions. You can still search all ${FOOD_COUNT}+ foods.</p>`;
   else {
     const pl = plan(d), band = bmiBand(pl.bmi);
