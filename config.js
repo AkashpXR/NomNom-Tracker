@@ -13,7 +13,7 @@ export const FIREBASE_CONFIG = {
 
 // reCAPTCHA site key registered in Firebase console → App Check. Firebase AI Logic (Gemini) refuses
 // requests until App Check is set up, so the describe, photo and Coach features need this.
-export const RECAPTCHA_SITE_KEY = '';
+export const RECAPTCHA_SITE_KEY = '6LcSEPotAAAAAFpAaT_Cb39Pq2s1bklx5EhaN1Y6';
 
 // true if the key above is a reCAPTCHA Enterprise key, false if it is a reCAPTCHA v3 key.
 export const RECAPTCHA_ENTERPRISE = false;
