@@ -22,6 +22,6 @@ export const RECAPTCHA_ENTERPRISE = false;
 export const GEMINI_MODEL = 'gemini-3.8-flash';
 
 // USDA FoodData Central key for searching foods that aren't in NomNom's built-in list.
-// DEMO_KEY works but allows only about 30 searches an hour. A free personal key (1,000 an hour)
-// comes by email from https://fdc.nal.usda.gov/api-key-signup
-export const USDA_API_KEY = 'DEMO_KEY';
+// Free personal keys come by email from https://fdc.nal.usda.gov/api-key-signup ('DEMO_KEY' also
+// works, at about 30 searches an hour).
+export const USDA_API_KEY = 'BkJK9h8fMKDcgcRFFbRJWmFLR7mtFkGJRMfNzkgc';
