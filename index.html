@@ -157,6 +157,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--leaf);bo
 .vm.e{color:var(--egg)}
 .vm.n{color:var(--nonveg)}
 .vm.n::after{width:0;height:0;border-radius:0;background:none;border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-bottom:6px solid currentColor}
+.vm.u{color:var(--ink-3);border-style:dashed}
+.vm.u::after{width:4px;height:4px}
+.more-ways{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin-top:10px}
 
 /* loading */
 .loading{display:grid;place-items:center;gap:12px;padding:80px 16px;text-align:center;color:var(--ink-3)}
@@ -518,7 +521,7 @@ label.segbtn:has(input:checked){border-color:var(--leaf);background:var(--leaf-s
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script type="module">
-import {FIREBASE_CONFIG, RECAPTCHA_SITE_KEY, RECAPTCHA_ENTERPRISE, GEMINI_MODEL} from './config.js';
+import {FIREBASE_CONFIG, RECAPTCHA_SITE_KEY, RECAPTCHA_ENTERPRISE, GEMINI_MODEL, USDA_API_KEY} from './config.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {initializeAppCheck, ReCaptchaV3Provider, ReCaptchaEnterpriseProvider} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app-check.js';
 import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
@@ -900,15 +903,273 @@ chicken-fried-rice|Chicken fried rice|G|n|1 plate|250|470|20|62|15|2.5|
 gobi-manchurian|Gobi manchurian|G|v|1 plate|150|320|6|30|20|3|manchurian
 chilli-chicken|Chilli chicken|G|n|1 plate|150|330|24|14|20|1.5|
 chilli-paneer|Chilli paneer|G|v|1 plate|150|340|14|16|25|1.5|
+popcorn-plain|Popcorn (air-popped)|ST|v|1 cup|8|31|1|6.2|0.4|1.2|pop corn makka plain popcorn
+popcorn-butter|Butter popcorn|ST|v|1 small tub|50|260|4|28|15|5|movie popcorn salted popcorn theatre popcorn
+popcorn-caramel|Caramel popcorn|ST|v|1 cup|35|150|1.3|27|4.4|1.8|sweet popcorn
+microwave-popcorn|Microwave popcorn|ST|v|1 mini bag|43|220|3.9|24|13|4.4|act ii popcorn
+nachos-chips|Tortilla chips|ST|v|1 handful|28|140|2|18|7|1.5|nachos corn chips doritos
+nacho-cheese|Nachos with cheese|ST|v|1 plate|150|500|11|50|29|5|loaded nachos
+pretzels|Pretzels|ST|v|1 handful|30|115|3|24|1|1|
+crackers|Salted crackers|ST|v|5 crackers|15|65|1.4|10.5|2|0.4|cream cracker monaco krackjack
+digestive|Digestive biscuits|ST|v|2 biscuits|30|145|2.1|19.5|6.5|1.1|
+cream-biscuits|Cream biscuits|ST|v|3 biscuits|36|175|1.8|25|7.5|0.5|bourbon oreo sandwich biscuits
+cookies-choc|Chocolate chip cookies|ST|v|2 cookies|30|145|1.6|19|7|0.8|cookie
+rice-cakes|Rice cakes|ST|v|2 cakes|18|70|1.4|15|0.5|0.8|puffed rice cakes
+granola-bar|Granola bar|ST|v|1 bar|30|130|2.5|20|4.5|1.5|cereal bar oats bar
+protein-bar|Protein bar|ST|v|1 bar|60|220|20|22|7|3|
+trail-mix|Trail mix|ST|v|1 handful|30|140|4|13|9|1.5|dry fruit mix nuts and raisins
+corn-puffs|Corn puffs|ST|v|1 small pack|30|160|2|17|9.5|0.5|kurkure cheese balls masala puffs
+murmura|Puffed rice|ST|v|1 cup|14|55|0.9|12.3|0.1|0.2|murmura pori kurmura mandakki பொரி
+masala-pori|Masala pori|ST|v|1 bowl|40|180|3|26|7|1.5|spiced puffed rice jhal muri
+sweet-corn-cup|Sweet corn cup|ST|v|1 cup|150|160|4.5|26|5|3.5|butter corn masala corn
+sev|Sev|ST|v|1 handful|30|165|4.5|15|10|2|plain sev omapodi ஓமப்பொடி
+veg-puff|Veg puff|ST|v|1 puff|80|260|4|26|15.5|1.5|bakery puff curry puff
+egg-puff|Egg puff|ST|e|1 puff|100|300|8|25|18.5|1|
+chicken-puff|Chicken puff|ST|n|1 puff|100|310|10|25|19|1|
+spring-roll|Veg spring roll|ST|v|2 rolls|100|240|4|28|12.5|2.5|
+cutlet|Veg cutlet|ST|v|2 pieces|100|220|4|26|11|3|aloo cutlet
+chicken-nuggets|Chicken nuggets|G|n|6 pieces|100|290|15|17|18|1|
+fried-chicken|Fried chicken|G|n|2 pieces|200|520|40|16|33|0.5|kfc style broasted chicken
+chicken-wings|Chicken wings|G|n|6 wings|150|430|36|6|29|0.5|hot wings bbq wings
+chicken-lollipop|Chicken lollipop|G|n|6 pieces|180|450|30|18|29|1|
+hot-dog|Hot dog|G|n|1 hot dog|100|290|10|23|17.5|1|
+onion-rings|Onion rings|G|v|8 rings|100|410|5|45|23.5|2.5|
+peri-fries|Peri peri fries|G|v|1 medium|117|380|4|48|19|4|masala fries
+pepperoni-pizza|Pepperoni pizza|G|n|1 slice|110|310|13|34|13.5|2|
+paneer-pizza|Paneer tikka pizza|G|v|1 slice|110|290|12|34|12|2|veg pizza farmhouse
+chicken-pizza|Chicken pizza|G|n|1 slice|110|300|15|33|12|2|bbq chicken pizza
+garlic-bread|Garlic bread|G|v|2 pieces|60|210|5|26|9.5|1.5|cheese garlic bread
+cheese-burger|Cheeseburger|G|n|1 burger|200|530|28|40|28|2|beef burger
+veg-sub|Veg sub sandwich|G|v|6 inch|230|380|14|58|9|5|veggie sub
+chicken-sub|Chicken sub sandwich|G|n|6 inch|250|420|28|52|10|5|chicken sub
+club-sandwich|Club sandwich|G|n|1 sandwich|250|520|28|42|26|3|chicken club
+cheese-sandwich|Grilled cheese sandwich|G|v|1 sandwich|120|370|14|30|21.5|1.5|cheese toast
+egg-sandwich|Egg sandwich|G|e|1 sandwich|150|320|15|30|15.5|2|egg mayo sandwich
+chicken-wrap|Chicken wrap|G|n|1 wrap|220|480|26|45|21|3|zinger wrap twister
+cup-noodles|Cup noodles|G|v|1 cup|70|320|7|42|14|2|instant cup noodles
+schezwan-rice|Schezwan fried rice|G|v|1 plate|250|430|8|66|14.5|3|szechuan fried rice
+schezwan-noodles|Schezwan noodles|G|v|1 plate|250|450|9|64|17|4|
+veg-manchurian|Veg manchurian gravy|G|v|1 bowl|200|260|5|26|15|3|veg balls manchurian
+honey-chilli-potato|Honey chilli potato|G|v|1 plate|150|360|4|46|18|3.5|
+dragon-chicken|Dragon chicken|G|n|1 plate|150|360|22|22|20.5|1|
+spaghetti-bolognese|Spaghetti bolognese|WD|n|1 plate|300|480|24|58|16|4|meat sauce pasta
+pasta-arrabbiata|Pasta arrabbiata|WD|v|1 plate|250|380|11|62|9.5|5|red sauce pasta penne
+pasta-pesto|Pesto pasta|WD|v|1 plate|250|520|14|60|25|4|
+lasagna|Lasagna|WD|n|1 piece|250|420|24|36|20|3|lasagne
+veg-lasagna|Veg lasagna|WD|v|1 piece|250|360|16|38|16|4|
+risotto|Mushroom risotto|WD|v|1 bowl|250|380|9|54|14|2|
+bruschetta|Bruschetta|WD|v|2 pieces|80|170|4|22|7.5|1.5|
+mac-cheese|Mac and cheese|WD|v|1 bowl|200|380|15|40|17.5|2|macaroni cheese
+tacos|Chicken tacos|WD|n|2 tacos|170|400|22|36|18|5|taco
+burrito|Chicken burrito|WD|n|1 burrito|300|600|32|70|21|8|burrito bowl
+bean-burrito|Bean burrito|WD|v|1 burrito|280|520|18|74|16|10|rajma burrito
+quesadilla|Cheese quesadilla|WD|v|1 quesadilla|150|470|19|38|27|3|
+guacamole|Guacamole|WD|v|2 tbsp|30|50|0.6|2.6|4.4|2|avocado dip
+salsa|Salsa|WD|v|2 tbsp|30|10|0.4|2|0.1|0.6|
+manchow-soup|Manchow soup|WD|v|1 bowl|250|140|4|18|6|2.5|veg manchow
+hot-sour-soup|Hot and sour soup|WD|v|1 bowl|250|110|5|14|3.5|2|
+sweet-corn-soup|Sweet corn soup|WD|v|1 bowl|250|150|4|26|3.5|2|
+dim-sum|Steamed dim sum|WD|n|4 pieces|120|200|10|24|7|1.5|dumplings har gow siu mai
+kung-pao|Kung pao chicken|WD|n|1 bowl|200|420|30|16|26|3|
+sweet-sour-chicken|Sweet and sour chicken|WD|n|1 bowl|200|440|20|50|17.5|1.5|
+sushi-veg|Veg sushi roll|WD|v|6 pieces|150|200|4|42|1.5|2|maki avocado roll cucumber roll
+sushi-salmon|Salmon sushi roll|WD|n|6 pieces|160|260|11|40|6|1.5|california roll maki nigiri
+ramen|Chicken ramen|WD|n|1 bowl|500|520|28|62|18|3|ramen noodle soup
+miso-soup|Miso soup|WD|v|1 bowl|240|40|3|4|1.5|1|
+teriyaki|Chicken teriyaki|WD|n|1 bowl|200|340|30|18|16|0.5|teriyaki chicken
+tempura|Prawn tempura|WD|n|5 pieces|120|300|14|24|16.5|1|
+green-curry|Thai green curry|WD|n|1 bowl|250|380|22|12|27.5|2.5|chicken green curry
+thai-red-curry|Thai red curry (veg)|WD|v|1 bowl|250|300|6|16|24|4|thai curry vegetables
+pad-thai|Pad thai|WD|n|1 plate|300|560|20|70|22|3|
+tom-yum|Tom yum soup|WD|n|1 bowl|250|110|10|8|4.5|1|
+shawarma|Chicken shawarma|WD|n|1 roll|250|520|30|46|24|3|shawarma roll
+falafel|Falafel|WD|v|4 pieces|80|270|11|25|14.5|4.5|
+falafel-wrap|Falafel wrap|WD|v|1 wrap|250|520|16|62|23|10|
+hummus|Hummus|WD|v|2 tbsp|30|80|2.4|4.3|6|1.8|houmous chickpea dip
+pita|Pita bread|WD|v|1 pita|60|165|5.5|33|0.7|1.3|pita pocket kubus
+kebab-platter|Chicken kebab platter|WD|n|1 plate|300|560|42|46|22|4|arabic grill platter with rice
+baklava|Baklava|WD|v|1 piece|40|190|3|20|11.5|1|
+kunafa|Kunafa|WD|v|1 piece|100|380|7|42|20.5|1|kunafeh kanafeh
+korean-fried-chicken|Korean fried chicken|WD|n|6 pieces|200|560|34|30|33|1|
+bibimbap|Bibimbap|WD|n|1 bowl|400|560|24|80|16|6|
+kimchi|Kimchi|WD|v|1 small bowl|80|12|1|2|0.4|1.3|
+pancakes|Pancakes|WD|v|2 pancakes|150|340|9|44|14|1.5|with maple syrup hotcakes
+waffles|Waffles|WD|v|2 waffles|150|420|10|50|20|1.5|
+french-toast|French toast|WD|e|2 slices|130|300|10|34|14|1.5|egg toast bread toast
+bacon|Bacon|WD|n|2 strips|16|85|6|0.2|6.6|0|
+steak|Grilled steak|WD|n|1 steak|200|500|50|0|33|0|beef steak sirloin
+roast-chicken|Roast chicken|WD|n|1 quarter leg|200|390|40|0|25|0|grilled chicken leg
+mashed-potato|Mashed potatoes|WD|v|1 cup|210|240|4|35|9|3|
+caesar-salad|Chicken caesar salad|WD|n|1 bowl|250|380|26|14|25|3|
+greek-salad|Greek salad|WD|v|1 bowl|200|210|6|10|16.5|3|feta salad
+coleslaw|Coleslaw|WD|v|1 bowl|100|150|1.2|12|11|2|
+tomato-soup|Tomato soup|WD|v|1 bowl|250|130|3|18|5|2.5|cream of tomato
+mushroom-soup|Cream of mushroom soup|WD|v|1 bowl|250|200|5|16|13|1.5|
+chicken-soup|Chicken clear soup|WD|n|1 bowl|250|90|9|6|3.5|1|chicken broth
+fish-chips|Fish and chips|WD|n|1 plate|350|840|35|80|42|7|
+quinoa|Quinoa (cooked)|BK|v|1 bowl|185|222|8|39|3.6|5.2|
+plain-pasta|Pasta (boiled)|BK|v|1 cup|140|220|8|43|1.3|2.5|macaroni penne spaghetti plain
+noodles-boiled|Noodles (boiled)|BK|v|1 cup|160|220|7|40|3.3|2|plain noodles hakka noodles boiled
+muesli|Muesli|BK|v|1 bowl|50|185|5|33|3.5|4|
+granola|Granola|BK|v|1/2 cup|60|270|6|38|11|4|
+chocos|Chocolate cereal|BK|v|1 bowl|30|115|2|25|1.2|1.2|chocos coco pops
+croissant|Croissant|BK|v|1 croissant|60|245|5|27|13|1.5|butter croissant
+muffin|Chocolate muffin|BK|v|1 muffin|100|420|6|52|21|2|cupcake
+donut|Glazed donut|BK|v|1 donut|60|240|3.5|30|12|1|doughnut
+bagel|Bagel|BK|v|1 bagel|100|270|10|53|1.6|2.3|
+brownie|Chocolate brownie|BK|v|1 piece|60|270|3.5|33|14.5|1.5|
+fruit-cake|Plum cake|BK|v|1 slice|60|220|3|33|8.5|1|fruit cake dry cake tea cake
+cream-bun|Cream bun|BK|v|1 bun|70|250|4.5|34|11|1|bakery bun
+sweet-bun|Sweet bun|BK|v|1 bun|60|180|5|32|3.5|1.2|milk bun
+dilpasand|Dilpasand|BK|v|1 piece|100|380|6|50|17.5|3|dilkush coconut bun
+nankhatai|Nankhatai|BK|v|2 pieces|30|150|2|17|8.5|0.5|
+khari|Khari biscuit|BK|v|2 pieces|20|110|1.6|11|6.6|0.4|puff biscuit
+pav|Pav (bread roll)|BK|v|1 pav|40|110|3.5|20|1.5|1|ladi pav bun
+multigrain-bread|Multigrain bread|BK|v|1 slice|30|80|4|13|1.2|2.2|
+tortilla|Wheat tortilla|BK|v|1 tortilla|45|140|3.7|23|3.5|1.5|wrap flatbread
+cheesecake|Cheesecake|SW|v|1 slice|100|320|5.5|26|22|0.4|
+tiramisu|Tiramisu|SW|v|1 piece|100|280|5|29|16|0.5|
+choc-cake|Chocolate cake|SW|v|1 slice|90|350|4.5|46|17|2|birthday cake black forest truffle
+dark-chocolate|Dark chocolate|SW|v|2 squares|20|120|1.6|9|8.5|2.2|70 percent cocoa
+milk-chocolate|Milk chocolate|SW|v|1 small bar|40|215|3|23.5|12|0.8|chocolate bar
+choc-wafer|Chocolate wafer bar|SW|v|1 bar|37|190|2.5|23|10|0.8|wafer chocolate
+candy|Hard candy|SW|v|3 pieces|15|59|0|15|0|0|toffee sweets lollipop
+gummies|Gummy candies|SW|v|10 pieces|25|85|1.5|19.5|0|0|jelly sweets
+marshmallow|Marshmallows|SW|v|4 pieces|28|90|0.5|23|0|0|
+custard|Custard|SW|v|1 bowl|150|180|5|28|5|0|fruit custard
+pudding|Chocolate pudding|SW|v|1 cup|120|170|3.5|28|5|1|
+jelly|Jelly dessert|SW|v|1 cup|120|85|1.5|20|0|0|jello
+ice-cream-choc|Chocolate ice cream|SW|v|1 scoop|66|145|2.5|19|7.3|0.8|
+sundae|Ice cream sundae|SW|v|1 cup|150|330|5|44|15|1|
+falooda|Falooda|SW|v|1 glass|300|400|9|60|13.5|1.5|royal falooda
+soan-papdi|Soan papdi|SW|v|1 piece|25|125|1.5|15|6.5|0.5|son papdi
+kalakand|Kalakand|SW|v|1 piece|40|150|5|17|7|0|milk cake
+cham-cham|Cham cham|SW|v|1 piece|50|175|3.5|28|5.5|0|
+malpua|Malpua|SW|v|1 piece|50|190|3|24|9|0.5|
+imarti|Imarti|SW|v|1 piece|40|170|1.5|26|6.5|0.3|jangiri ஜாங்கிரி
+balushahi|Balushahi|SW|v|1 piece|50|220|2.5|28|11|0.5|badusha பாதுஷா
+coconut-ladoo|Coconut ladoo|SW|v|1 ladoo|30|130|1.3|15|7.5|2|nariyal ladoo
+moong-halwa|Moong dal halwa|SW|v|1 bowl|100|390|7|42|21.5|2|
+basundi|Basundi|SW|v|1 bowl|100|210|6.5|25|9.5|0|rabri
+beer|Beer|D|v|1 bottle|330|145|1.5|12|0|0|lager pint
+beer-strong|Strong beer|D|v|1 bottle|650|370|3|30|0|0|
+wine|Wine|D|v|1 glass|150|125|0.1|3.8|0|0|red wine white wine
+whisky|Whisky|D|v|1 peg|30|70|0|0|0|0|whiskey 30 ml peg brandy
+vodka|Vodka|D|v|1 peg|30|65|0|0|0|0|gin
+rum|Rum|D|v|1 peg|30|65|0|0|0|0|
+cocktail|Cocktail|D|v|1 glass|200|250|0.3|25|0.2|0.2|mojito margarita pina colada
+breezer|Breezer|D|v|1 bottle|275|180|0|30|0|0|alcopop
+latte|Cafe latte|D|v|1 regular|350|190|10|15|10|0|coffee latte
+cappuccino|Cappuccino|D|v|1 regular|350|130|7|11|6.5|0|
+mocha|Cafe mocha|D|v|1 regular|350|290|10|38|11|1.5|
+frappe|Coffee frappe|D|v|1 regular|400|380|6|60|13|0|frappuccino iced blended coffee
+hot-chocolate|Hot chocolate|D|v|1 mug|250|220|8|30|8|1.5|cocoa drink bournvita horlicks boost
+milkshake|Milkshake|D|v|1 glass|300|330|9|50|10.5|0.5|chocolate shake strawberry shake banana shake
+smoothie|Fruit smoothie|D|v|1 glass|300|190|4|42|1.2|3|banana berry smoothie
+iced-tea|Iced tea|D|v|1 glass|300|90|0|23|0|0|lemon ice tea
+lemon-tea|Lemon tea|D|v|1 cup|200|35|0|9|0|0|black tea with sugar honey lemon tea
+energy-drink|Energy drink|D|v|1 can|250|112|0|28|0|0|
+sports-drink|Sports drink|D|v|1 bottle|500|130|0|32|0|0|electrolyte drink glucose drink
+diet-soda|Diet soda|D|v|1 can|330|1|0|0|0|0|zero sugar cola sugar free
+apple-juice|Apple juice|D|v|1 glass|250|115|0.3|28|0.3|0.5|packaged fruit juice mixed fruit juice
+watermelon-juice|Watermelon juice|D|v|1 glass|250|80|1.5|18|0.4|0.5|
+bubble-tea|Bubble tea|D|v|1 regular|500|350|3|70|6.5|0.5|boba milk tea
+sattu-drink|Sattu sharbat|D|v|1 glass|250|160|9|25|2.5|5|sattu drink
+jaljeera|Jaljeera|D|v|1 glass|250|40|0.3|10|0|0.3|
+thandai|Thandai|D|v|1 glass|250|280|8|36|12|1.5|
+soy-milk|Soy milk|D|v|1 glass|250|105|7|8|4.5|1|
+almond-milk-unsw|Almond milk (unsweetened)|D|v|1 glass|250|40|1|1.5|3|0.5|
+full-cream-milk|Milk (full cream)|D|v|1 glass|250|160|8|12|9|0|whole milk buffalo milk
+skimmed-milk|Milk (skimmed)|D|v|1 glass|250|90|8.5|12.5|0.5|0|double toned milk
+strawberries|Strawberries|F|v|1 cup|150|48|1|10.5|0.5|3|
+blueberries|Blueberries|F|v|1/2 cup|75|43|0.6|10|0.2|1.8|
+kiwi|Kiwi|F|v|1 kiwi|75|46|0.9|10.5|0.4|2.3|
+pear|Pear|F|v|1 medium|180|100|0.6|25|0.2|5.5|nashpati
+peach|Peach|F|v|1 medium|150|58|1.4|12.5|0.4|2.2|aadu
+plum|Plum|F|v|2 plums|130|60|0.9|13|0.4|1.8|aloo bukhara
+cherries|Cherries|F|v|1 cup|140|88|1.5|22|0.3|3|
+litchi|Litchi|F|v|10 pieces|100|66|0.8|16.5|0.4|1.3|lychee
+jamun|Jamun|F|v|1 cup|100|60|0.7|15.5|0.2|0.6|java plum naval pazham நாவல் பழம்
+custard-apple|Custard apple|F|v|1 medium|150|140|3|31|0.5|6.6|sitaphal seetha pazham சீதாப்பழம்
+avocado|Avocado|F|v|1/2 avocado|70|112|1.4|6|10.3|4.7|butter fruit
+dragon-fruit|Dragon fruit|F|v|1 cup|200|120|2.4|26|0|6|pitaya
+figs|Figs (fresh)|F|v|2 figs|100|74|0.8|19|0.3|2.9|anjeer
+dried-figs|Dried figs|F|v|3 pieces|30|75|1|19|0.3|3|anjeer dry
+raisins|Raisins|F|v|1 tbsp|15|45|0.5|12|0|0.6|kishmish dry grapes
+pistachios|Pistachios|F|v|20 pieces|15|85|3|4|7|1.5|pista
+mixed-nuts|Mixed nuts|F|v|1 handful|30|180|5|7|16|2.5|dry fruits
+seeds|Seeds (pumpkin, sunflower, chia, flax)|F|v|1 tbsp|10|58|2.5|1.5|4.8|0.8|chia seeds flax seeds
+fruit-salad|Fruit salad|F|v|1 bowl|200|110|1.5|27|0.5|3.5|fruit chaat
+carrot|Carrot|F|v|1 medium|60|25|0.6|6|0.1|1.7|gajar
+cucumber|Cucumber|F|v|1 medium|200|30|1.3|6|0.2|1|kheera vellarikkai வெள்ளரிக்காய்
+tomato|Tomato|F|v|1 medium|120|22|1|4.7|0.2|1.4|tamatar thakkali
+broccoli|Broccoli (steamed)|F|v|1 cup|150|52|3.6|8|0.6|5|
+sweet-potato|Sweet potato (boiled)|F|v|1 medium|150|130|2.4|30|0.2|3.8|shakarkandi sakkaraivalli kizhangu
+boiled-potato|Potato (boiled)|F|v|1 medium|150|130|2.8|30|0.2|2.7|aloo
+corn-cob|Corn on the cob|F|v|1 cob|100|96|3.4|18|1.5|2.4|bhutta makka sweet corn
+beetroot|Beetroot|F|v|1 medium|80|35|1.3|8|0.1|2.2|chukandar
+mushrooms|Mushrooms (sauteed)|F|v|1 cup|100|70|3.5|5|4|2|
+spinach|Spinach (cooked)|F|v|1 cup|180|41|5.4|4|0.5|4.3|palak keerai
+steamed-veg|Steamed vegetables|F|v|1 bowl|150|60|3|11|0.5|4|boiled vegetables
+scrambled-eggs|Scrambled eggs|B|e|2 eggs|120|200|13|2|15.5|0|
+fried-egg|Fried egg|B|e|1 egg|46|90|6.3|0.4|7|0|egg bullseye half fry
+sausage|Chicken sausage|B|n|2 sausages|60|140|10|3|10|0|frankfurter
+grilled-salmon|Grilled salmon|B|n|100 g|100|210|22|0|13|0|salmon fillet
+tuna|Tuna (canned in water)|B|n|100 g|100|116|26|0|1|0|
+prawns|Boiled prawns|B|n|100 g|100|99|24|0.2|0.3|0|shrimp
+tofu|Tofu|B|v|100 g|100|145|15.5|3.5|8.7|2.3|
+chicken-thigh|Chicken thigh (cooked)|B|n|100 g|100|210|26|0|11|0|
+mutton-cooked|Mutton (cooked, lean)|B|n|100 g|100|230|30|0|12|0|goat meat
+ketchup|Tomato ketchup|B|v|1 tbsp|17|19|0.2|4.5|0|0.1|sauce
+mayonnaise|Mayonnaise|B|v|1 tbsp|15|95|0.1|0.3|10.5|0|mayo
+cheese-slice|Cheese slice|B|v|1 slice|20|62|3.6|1|5|0|processed cheese
+mozzarella|Mozzarella cheese|B|v|30 g|30|85|6.3|0.7|6.3|0|
+cream|Fresh cream|B|v|1 tbsp|15|50|0.3|0.5|5.2|0|malai
+jam|Jam|B|v|1 tbsp|20|55|0|14|0|0.2|fruit jam
+choc-spread|Chocolate hazelnut spread|B|v|1 tbsp|19|100|1|11|5.8|0.5|nutella
+greek-yogurt|Greek yogurt|B|v|1 cup|150|130|15|6|5|0|hung curd
+flavoured-yogurt|Flavoured yogurt|B|v|1 cup|100|100|3.5|15|2.8|0|fruit yogurt
+goan-fish-curry|Goan fish curry|W|n|1 bowl|200|260|20|8|16.5|2|xitt kodi
+vindaloo|Pork vindaloo|W|n|1 bowl|200|420|26|8|31.5|2|chicken vindaloo
+xacuti|Chicken xacuti|W|n|1 bowl|200|380|28|9|26|3|
+undhiyu|Undhiyu|W|v|1 bowl|150|240|5|22|15|6|
+handvo|Handvo|W|v|1 piece|100|220|7|26|9.5|3|
+fafda|Fafda|W|v|1 serving|50|260|5|24|16|2.5|fafda jalebi
+gujarati-kadhi|Gujarati kadhi|W|v|1 katori|150|110|3.5|12|5.5|0.5|
+dal-dhokli|Dal dhokli|W|v|1 bowl|250|330|12|50|9|7|
+zunka-bhakri|Zunka bhakri|W|v|1 plate|250|420|13|60|14|9|pithla bhakri
+bhakri|Jowar bhakri|W|v|1 bhakri|60|170|5|34|1.8|4|jowar roti cholam roti
+gatte|Gatte ki sabzi|W|v|1 katori|150|240|9|22|13|4|
+laal-maas|Laal maas|W|n|1 bowl|200|450|30|6|34|1.5|
+dhansak|Dhansak|W|n|1 bowl|250|380|24|34|16|8|mutton dhansak
+bajra-roti|Bajra roti|N|v|1 roti|60|190|5.5|33|3.5|5|bajre ki roti kambu roti
+nihari|Mutton nihari|N|n|1 bowl|250|480|32|10|35|1.5|
+mutton-korma|Mutton korma|N|n|1 bowl|200|450|28|10|33|2|
+chicken-korma|Chicken korma|N|n|1 bowl|200|400|28|10|28|2|
+yakhni-pulao|Mutton yakhni pulao|N|n|1 plate|300|540|24|62|21|2|
+tangdi-kebab|Tangdi kebab|N|n|2 legs|200|360|40|4|20.5|0.5|
+fish-tikka|Fish tikka|N|n|6 pieces|150|240|30|4|11.5|0.5|
+soya-chaap|Soya chaap|N|v|1 plate|150|330|20|18|20|4|malai chaap tandoori chaap
+chole-kulche|Chole kulche|N|v|1 plate|300|560|17|80|19|10|matar kulcha
+aloo-puri|Aloo puri|N|v|1 plate|250|520|9|60|27|5|puri sabzi
+dal-chawal|Dal chawal|N|v|1 plate|350|420|14|72|8|6|dal rice
+kosha-mangsho|Kosha mangsho|E|n|1 bowl|200|440|30|8|32|2|bengali mutton curry
+shorshe-ilish|Shorshe ilish|E|n|1 piece|150|330|22|4|25|1|hilsa mustard fish
+dalma|Dalma|E|v|1 bowl|200|190|9|28|4.5|7|odia dal vegetables
+cholar-dal|Cholar dal|E|v|1 katori|150|220|9|28|8|6|bengali chana dal
+naga-pork|Naga pork curry|E|n|1 bowl|200|450|26|6|36|2|north east pork bamboo shoot
+ghugni|Ghugni|E|v|1 bowl|150|210|10|28|6|8|yellow peas curry
 `;
 const FOODS = RAW.trim().split('\n').map(line => {
   const [id,name,cat,diet,serving,g,kcal,p,c,f,fib,al] = line.split('|');
   return {id,name,cat,diet,serving,g:+g,kcal:+kcal,p:+p,c:+c,f:+f,fib:+fib,key:(name+' '+(al||'')).toLowerCase()};
 });
 const FOOD_BY_ID = Object.fromEntries(FOODS.map(f => [f.id, f]));
-const CAT_NAME = {S:'South Indian',TN:'Tamil Nadu',N:'North Indian',W:'West Indian',E:'East & North-East',ST:'Street food & snacks',SW:'Sweets',D:'Drinks',F:'Fruits, nuts & salads',B:'Staples & basics',G:'Fast food & Indo-Chinese',MY:'My foods',AI:'Estimated'};
-const CAT_CHIPS = [['all','All'],['S','South Indian'],['TN','Tamil'],['N','North Indian'],['W','West'],['E','East'],['ST','Snacks'],['SW','Sweets'],['D','Drinks'],['F','Fruits & nuts'],['B','Staples'],['G','Fast food']];
-const DIET_NAME = {v:'Vegetarian',e:'Contains egg',n:'Non-vegetarian'};
+const CAT_NAME = {S:'South Indian',TN:'Tamil Nadu',N:'North Indian',W:'West Indian',E:'East & North-East',ST:'Snacks & street food',SW:'Sweets & desserts',D:'Drinks',
+  F:'Fruits, veg & nuts',B:'Staples & basics',G:'Fast food & Indo-Chinese',WD:'World cuisine',BK:'Bakery & cereals',MY:'My foods',AI:'Estimated',US:'USDA database'};
+const CAT_CHIPS = [['all','All'],['S','South Indian'],['TN','Tamil'],['N','North Indian'],['W','West'],['E','East'],['ST','Snacks'],['SW','Sweets'],['D','Drinks'],
+  ['F','Fruit & veg'],['B','Staples'],['BK','Bakery'],['G','Fast food'],['WD','World']];
+const DIET_NAME = {v:'Vegetarian',e:'Contains egg',n:'Non-vegetarian',u:'Veg status not listed'};
 
 const MEALS = [
   {id:'breakfast',name:'Breakfast',time:'7–10 am',share:.25},
@@ -1205,12 +1466,12 @@ async function signOutNow(){
 
 /* ---------- model ---------- */
 const profile = () => ({...DEFAULT_PROFILE, ...(S.docs.profile || {})});
-const prefs = () => ({favs:[], recents:[], custom:[], ...(S.docs.prefs || {})});
+const prefs = () => ({favs:[], recents:[], custom:[], ext:[], ...(S.docs.prefs || {})});
 const weights = () => ((S.docs.weights && S.docs.weights.log) || []).slice().sort((a, b) => a.d < b.d ? -1 : 1);
 const getDay = k => S.docs['day-' + k] || {date:k, entries:[], water:0, acts:[]};
 function mutateDay(k, fn){ const d = clone(getDay(k)); d.entries = d.entries || []; d.acts = d.acts || []; fn(d); put('day-' + k, d); }
 function mutatePrefs(fn){ const p = clone(prefs()); fn(p); put('prefs', p); }
-const findFood = id => FOOD_BY_ID[id] || prefs().custom.find(c => c.id === id) || null;
+const findFood = id => FOOD_BY_ID[id] || prefs().custom.find(c => c.id === id) || prefs().ext.find(c => c.id === id) || USDA.foods.get(id) || null;
 function scale(b, qty, unit){ const k = unit === 'g' ? qty / (b.g || 100) : qty; return {kcal:b.kcal*k, p:b.p*k, c:b.c*k, f:b.f*k, fib:(b.fib || 0)*k}; }
 const entryNut = e => scale(e.base, e.qty, e.unit);
 function totals(d){ const t = {kcal:0,p:0,c:0,f:0,fib:0}; for (const e of d.entries || []){ const n = entryNut(e); t.kcal += n.kcal; t.p += n.p; t.c += n.c; t.f += n.f; t.fib += n.fib; } return t; }
@@ -1253,7 +1514,10 @@ function suggestions(meal, p){
 function addEntry(k, meal, food, qty, unit){
   mutateDay(k, d => d.entries.push({id:uid(), fid:food.id, name:food.name, diet:food.diet, cat:food.cat, meal, qty, unit,
     base:{serving:food.serving, g:food.g, kcal:food.kcal, p:food.p, c:food.c, f:food.f, fib:food.fib || 0}, t:Date.now()}));
-  if (food.cat !== 'AI') mutatePrefs(p => { p.recents = [food.id, ...p.recents.filter(x => x !== food.id)].slice(0, 30); });
+  if (food.cat !== 'AI') mutatePrefs(p => {
+    p.recents = [food.id, ...p.recents.filter(x => x !== food.id)].slice(0, 30);
+    if (food.cat === 'US') p.ext = [food, ...p.ext.filter(x => x.id !== food.id)].slice(0, 150);
+  });
 }
 function logWeight(k, kg){
   const log = weights().filter(w => w.d !== k); log.push({d:k, kg:r1(kg)}); log.sort((a, b) => a.d < b.d ? -1 : 1);
@@ -1498,7 +1762,7 @@ function openEdit(id){
 function sheetTitle(){
   const when = UI.date === todayKey() ? '' : ` · ${dayLabel(UI.date)}`;
   switch (SH.mode){
-    case 'browse': return ['Add to ' + mealName(SH.meal), `Search ${FOOD_COUNT}+ Indian foods${when}`];
+    case 'browse': return ['Add to ' + mealName(SH.meal), `Search ${FOOD_COUNT}+ foods${when}`];
     case 'detail': return [SH.detail.editId ? 'Edit entry' : 'Add food', dayLabel(UI.date)];
     case 'custom': return ['Create a food', 'Saved to My foods for next time'];
     case 'review': return ['Check and add', 'Fix amounts before they go in your diary'];
@@ -1539,7 +1803,7 @@ function browseHTML(){
   const head = `<div class="stabs" role="tablist">${tabs.map(([id, name, ic]) => `<button class="stab" role="tab" data-act="stab" data-tab="${id}" aria-selected="${SH.tab === id}">${icon(ic)}${name}</button>`).join('')}</div>`;
   const p = prefs();
   if (SH.tab === 'search') return head + `
-    <div class="searchbox">${icon('search')}<input id="q" type="search" placeholder="Try idli, rajma, biryani, chai…" value="${esc(SH.q)}" autocomplete="off" aria-label="Search foods"></div>
+    <div class="searchbox">${icon('search')}<input id="q" type="search" placeholder="Try idli, biryani, popcorn, pasta…" value="${esc(SH.q)}" autocomplete="off" aria-label="Search foods"></div>
     <div class="filters"><div class="chips scroll" role="group" aria-label="Cuisine">${CAT_CHIPS.map(([id, n]) => `<button class="chip ${SH.cat === id ? 'on' : ''}" data-act="cat" data-cat="${id}" aria-pressed="${SH.cat === id}">${n}</button>`).join('')}</div>
     <label class="toggle"><input type="checkbox" id="vegOnly" ${SH.vegOnly ? 'checked' : ''}> <span class="vm v"></span> Veg only</label></div>
     <div id="results"></div>`;
@@ -1571,7 +1835,8 @@ function foodRow(f){
     <span class="fr-kcal">${fmt(f.kcal)}<small>kcal</small></span></button></li>`;
 }
 function searchFoods(q, cat, vegOnly){
-  let list = FOODS.concat(prefs().custom.map(c => ({...c, key:c.name.toLowerCase()})));
+  const pr = prefs();
+  let list = FOODS.concat(pr.custom.map(c => ({...c, key:c.name.toLowerCase()})), pr.ext.map(c => ({...c, key:c.name.toLowerCase()})));
   if (cat !== 'all') list = list.filter(f => f.cat === cat || (cat === 'S' && f.cat === 'TN'));
   if (vegOnly) list = list.filter(f => f.diet === 'v');
   q = q.trim().toLowerCase();
@@ -1591,12 +1856,68 @@ function renderResults(){
   if (!q && SH.cat === 'all'){
     const p = profile(), pop = suggestions(SH.meal, p).filter(f => !SH.vegOnly || f.diet === 'v');
     box.innerHTML = `<p class="res-title">Popular for ${esc(mealName(SH.meal).toLowerCase())}</p><ul class="results">${pop.map(foodRow).join('')}</ul>
-      <p class="fineprint" style="margin-top:10px">Search by English or regional names, like thayir sadam, majjige or golgappa. Pick a cuisine above to browse it all.</p>`;
+      <p class="fineprint" style="margin-top:10px">Search by English or regional names, like thayir sadam, majjige or golgappa. Anything not in NomNom's list is looked up in the USDA food database, or Gemini can estimate it.</p>`;
     return;
   }
-  const list = searchFoods(q, SH.cat, SH.vegOnly);
-  box.innerHTML = list.length ? `<p class="res-title">${list.length} ${list.length === 1 ? 'food' : 'foods'}</p><ul class="results">${list.slice(0, 80).map(foodRow).join('')}</ul>`
-    : `<div class="empty"><p>No match for “${esc(q)}”.</p><button class="btn ghost sm" data-act="new-food">${icon('plus')} Create “${esc(q.slice(0, 30))}”</button>${aiOn() ? `<button class="linkbtn" data-act="stab" data-tab="describe">${icon('spark')} Describe it instead</button>` : ''}</div>`;
+  const list = searchFoods(q, SH.cat, SH.vegOnly), online = q.length >= 3 && SH.cat === 'all';
+  box.innerHTML = (list.length ? `<p class="res-title">${list.length} ${list.length === 1 ? 'food' : 'foods'} in NomNom</p><ul class="results">${list.slice(0, 80).map(foodRow).join('')}</ul>`
+      : `<div class="empty"><p>Nothing called “${esc(q)}” in NomNom's list.</p></div>`)
+    + (online ? '<div id="usdaBox"></div>' : '')
+    + (q ? `<div class="more-ways">${aiOn() ? `<button class="linkbtn" data-act="ask-ai">${icon('spark')} Ask Gemini to estimate “${esc(q.slice(0, 40))}”</button>` : ''}
+        <button class="linkbtn" data-act="new-food">${icon('plus')} Create “${esc(q.slice(0, 30))}” yourself</button></div>` : '');
+  if (online) usdaSearch(q);
+}
+
+/* ---------- USDA FoodData Central: online search for foods not in the built-in list ---------- */
+const USDA = {cache:new Map(), foods:new Map(), timer:null};
+function usdaFood(f){
+  const nut = (...ids) => { for (const id of ids){ const n = (f.foodNutrients || []).find(x => x.nutrientId === id); if (n && +n.value) return +n.value; } return 0; };
+  const ms = (f.foodMeasures || []).filter(x => x.gramWeight > 0 && x.disseminationText && !/quantity not specified/i.test(x.disseminationText))
+    .sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
+  const m = ms.find(x => x.gramWeight >= 15 && x.gramWeight <= 500) || ms[0];
+  const g = m ? m.gramWeight : 100, k = g / 100;
+  let serving = m ? m.disseminationText.replace(/,?\s*NFS\b/gi, '').replace(/\s+/g, ' ').trim().slice(0, 40) : '100 g';
+  if (!/^\d/.test(serving)) serving = '1 ' + serving;
+  const name = String(f.description || '').replace(/,\s*(NFS|NS as to [^,]+)/gi, '').trim();
+  return {id:'us-' + f.fdcId, name:name.charAt(0).toUpperCase() + name.slice(1), cat:'US', diet:'u', serving, g:r1(g),
+    kcal:Math.round(nut(1008, 2047, 2048) * k), p:r1(nut(1003) * k), c:r1(nut(1005) * k), f:r1(nut(1004) * k), fib:r1(nut(1079) * k)};
+}
+function usdaSearch(q){
+  clearTimeout(USDA.timer);
+  const key = q.toLowerCase();
+  if (USDA.cache.has(key)) return renderUsda(key);
+  renderUsda(key, true);
+  USDA.timer = setTimeout(async () => {
+    try {
+      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(USDA_API_KEY)}&query=${encodeURIComponent(q)}`
+        + `&dataType=${encodeURIComponent('Survey (FNDDS),SR Legacy,Foundation')}&pageSize=15`;
+      const res = await fetch(url);
+      if (!res.ok) throw {status:res.status};
+      const j = await res.json(), seen = new Set(), items = [];
+      for (const f of j.foods || []){
+        const food = usdaFood(f), nk = food.name.toLowerCase();
+        if (!food.kcal || seen.has(nk)) continue;
+        seen.add(nk); USDA.foods.set(food.id, food); items.push(food);
+      }
+      USDA.cache.set(key, {items});
+    } catch (e){
+      const s = e && e.status;
+      USDA.cache.set(key, {err:s === 429 ? "USDA's free demo key has hit its hourly limit. Add your own free key in config.js for more searches."
+        : s === 401 || s === 403 ? 'The USDA key in config.js was refused. Check it, or set it back to DEMO_KEY.'
+        : "Couldn't reach the USDA food database. Check your connection."});
+      setTimeout(() => USDA.cache.delete(key), 60000);
+    }
+    renderUsda(key);
+  }, 650);
+}
+function renderUsda(key, loading){
+  const box = $('#usdaBox'); if (!box || SH.q.trim().toLowerCase() !== key) return;
+  if (SH.vegOnly){ box.innerHTML = '<p class="fineprint">USDA results are hidden while Veg only is on, because they don\'t say whether a dish is vegetarian.</p>'; return; }
+  const r = USDA.cache.get(key);
+  if (loading || !r){ box.innerHTML = '<div class="status small"><span class="dots"><i></i><i></i><i></i></span> Searching the USDA food database…</div>'; return; }
+  if (r.err){ box.innerHTML = `<p class="fineprint">${esc(r.err)}</p>`; return; }
+  box.innerHTML = r.items.length ? `<p class="res-title">${r.items.length} more from the USDA database</p><ul class="results">${r.items.map(foodRow).join('')}</ul>`
+    : '<p class="fineprint">No matches in the USDA database either.</p>';
 }
 function detailHTML(){
   const D = SH.detail, f = D.food, isEdit = !!D.editId;
@@ -1606,6 +1927,7 @@ function detailHTML(){
       <div class="d-title"><h3>${esc(f.name)}</h3><p>${esc(CAT_NAME[f.cat] || '')} · ${esc(f.serving)} = ${fmt(f.g)} g</p></div>
       ${canFav ? `<button class="iconbtn fav ${fav ? 'on' : ''}" data-act="fav" aria-pressed="${fav}" aria-label="${fav ? 'Remove from saved foods' : 'Save this food'}">${icon('star')}</button>` : ''}</div>
     ${f.cat === 'AI' ? '<p class="small"><span class="est-tag">Estimated</span> Gemini estimated these values because the dish is not in NomNom\'s list.</p>' : ''}
+    ${f.cat === 'US' ? '<p class="small muted">Values from USDA FoodData Central, based on typical US recipes. It doesn\'t say whether a dish is vegetarian.</p>' : ''}
     <div class="field"><label for="dq">How much?</label>
       <div class="qty-row"><button class="iconbtn" data-act="dq" data-n="-1" aria-label="Less">${icon('minus')}</button>
         <input id="dq" type="number" inputmode="decimal" min="0" step="${D.unit === 'g' ? 10 : 0.5}" value="${D.qty}">
@@ -2096,7 +2418,11 @@ document.addEventListener('click', e => {
     case 'dmeal': D.meal = ds.v; renderSheet(); break;
     case 'd-save': saveDetail(); break;
     case 'del-entry': removeEntry(D.editId); break;
-    case 'fav': { const id = D.food.id; mutatePrefs(p => { p.favs = p.favs.includes(id) ? p.favs.filter(x => x !== id) : [id, ...p.favs].slice(0, 100); }); renderSheet(); break; }
+    case 'fav': { const f = D.food, id = f.id; mutatePrefs(p => {
+      p.favs = p.favs.includes(id) ? p.favs.filter(x => x !== id) : [id, ...p.favs].slice(0, 100);
+      if (f.cat === 'US' && !p.ext.some(x => x.id === id)) p.ext = [f, ...p.ext].slice(0, 150);
+    }); renderSheet(); break; }
+    case 'ask-ai': SH.ai.text = SH.q.trim(); SH.ai.error = ''; SH.tab = 'describe'; renderSheet(); runAI(); break;
     case 'del-custom': { const id = D.food.id; mutatePrefs(p => { p.custom = p.custom.filter(c => c.id !== id); p.favs = p.favs.filter(x => x !== id); p.recents = p.recents.filter(x => x !== id); });
       SH.tab = 'mine'; SH.mode = 'browse'; renderSheet(); toast('Food deleted'); break; }
     case 'new-food': SH.mode = 'custom'; renderSheet(); setTimeout(() => { const n = $('#cf-name'); if (n) n.focus(); }, 30); break;

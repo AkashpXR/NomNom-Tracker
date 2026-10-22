@@ -1,6 +1,6 @@
 # NomNom Tracker
 
-A calorie tracker built around Indian food: about 280 South Indian, North Indian, West, East, street-food, sweet and drink entries with home-style servings, plus macros, water, activity, weight and a Gemini-powered coach.
+A calorie tracker built around Indian food: over 600 built-in foods (South Indian and Tamil, North, West and East Indian, snacks, bakery, sweets, drinks, fruit and veg, and world cuisine) with home-style servings, plus macros, water, activity, weight and a Gemini-powered coach. Anything not built in is searched in the USDA FoodData Central database, or Gemini can estimate it.
 
 **Live app:** https://akashpxr.github.io/NomNom-Tracker/
 
@@ -31,6 +31,10 @@ A calorie tracker built around Indian food: about 280 South Indian, North Indian
    - Firebase console → **App Check → Apps** → register the web app with **reCAPTCHA v3** and paste the key's **secret key**.
    - Put the **site key** in `config.js` as `RECAPTCHA_SITE_KEY`, then commit and push.
    - Testing on `localhost`: the browser console prints an App Check debug token; add it under **App Check → Apps → Manage debug tokens**.
+
+## USDA food search (optional key)
+
+`config.js` ships with `USDA_API_KEY = 'DEMO_KEY'`, which allows about 30 searches an hour. For more, get a free key by email at https://fdc.nal.usda.gov/api-key-signup and put it in `config.js`.
 
 ## GitHub Pages
 
